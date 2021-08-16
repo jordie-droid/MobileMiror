@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './weather_details.dart';
 
 class Weather extends StatefulWidget {
   @override
@@ -7,6 +8,7 @@ class Weather extends StatefulWidget {
 
 class _WeatherState extends State<Weather> {
   String city = "";
+  TextEditingController cityText = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +22,20 @@ class _WeatherState extends State<Weather> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
+                controller: cityText,
                 decoration:
                     InputDecoration(hintText: "Veuillez saisir la ville"),
                 onChanged: (value) {
                   setState(() {
                     city = value;
                   });
+                },
+                onSubmitted: (value) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => WeatherDetails(city)));
+                  cityText.text = "";
                 },
               ),
             ),
@@ -36,7 +46,11 @@ class _WeatherState extends State<Weather> {
                 padding: const EdgeInsets.all(8.0),
                 child: RaisedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: WeatherDetails()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => WeatherDetails(city)));
+                    cityText.text = "";
                   },
                   child: Text(
                     "Valider",
